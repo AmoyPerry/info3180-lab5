@@ -11,3 +11,10 @@ class MovieModel(db.Model):
     poster = db.Column(db.String(80))
     create_at = db.Column(db.DateTime())
     
+    def __init__(self, title, description, poster):
+         self.title = title
+         self.description = description
+         self.poster = poster
+         
+    def __repr__(self):
+        return '<MovieModel %r>' % self.id

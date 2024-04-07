@@ -10,12 +10,17 @@ from flask import render_template, request, jsonify, send_file
 import os
 from app.forms import MovieForm
 from werkzeug.utils import secure_filename
-
+from flask_wtf.csrf import generate_csrf
 
 
 ###
 # Routing for your application.
 ###
+@app.route('/api/v1/csrf-token', methods=['GET'])
+def get_csrf():
+ return jsonify({'csrf_token': generate_csrf()}) 
+
+
 
 @app.route('/')
 def index():
@@ -26,6 +31,7 @@ def movies():
     form = MovieForm()
     
     if form.validate_on_submit():
+        
         title = form.title.data
         description = form.description.data
         poster = form.poster.data
@@ -38,7 +44,6 @@ def movies():
         
         db.sesssion.add(NewMovie)
         db.session.commit()
-        
         
         info ={
          "message " : "Successful addition of Movie!",
